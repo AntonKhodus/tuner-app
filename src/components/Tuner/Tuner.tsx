@@ -1,16 +1,17 @@
 import React, { useContext, useEffect, useState } from "react"
 import { TunerScreen } from "./TunerScreen/TunerScreen";
 import { MainAudioContext } from '../context';
-import { IChainNode, IMainAudioContext } from "../../types/types";
+import { IMainAudioContext } from "../../types/types";
+import { PitchReader } from "../../classes/PitchReader";
 
 export const Tuner: React.FC = () => {
 
-    // console.log(new AudioNode());
     const {context, chain} = useContext(MainAudioContext) as IMainAudioContext;
     const [analyser, setAnalyser] = useState<AnalyserNode>();
 
     useEffect(() => {
         const anlsr = new AnalyserNode(context.context);
+        anlsr.fftSize = 32768;
         setAnalyser(anlsr);
         chain.setChain(prev => {
             if(prev){
@@ -25,6 +26,10 @@ export const Tuner: React.FC = () => {
                 }]
             }
         })
+        const pr = new PitchReader(anlsr);
+        pr.readOnce(1000).then(response => {
+            console.log(response);
+        });
     }, []);
 
 
