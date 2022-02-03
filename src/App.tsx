@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { TunerComponent } from './components/Tuner/TunerComponent';
+import { useEffect, useState } from 'react';
+import { Tuner } from './components/Tuner/Tuner';
 import { MainAudioContext } from './components/context';
 import { IChainNode } from './types/types';
 
@@ -56,7 +56,9 @@ const App = () => {
           context: {context, setContext}, 
           chain: {chain, setChain}
         }}>
-          <TunerComponent />
+          <div className="container">
+            <Tuner />
+          </div>
         </MainAudioContext.Provider>
       }
     </div>

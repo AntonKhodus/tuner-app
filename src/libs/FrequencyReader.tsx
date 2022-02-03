@@ -1,32 +1,22 @@
-export class Tuner{
+export class FrequencyReader{
     
-    private analyser: AnalyserNode;
-    private bufferData: Float32Array;
-    private A4: number;
-    private notes: string[] = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+    // private analyser: AnalyserNode;
+    // private bufferData: Float32Array;
+    // private A4: number;
 
-    constructor(analyser:AnalyserNode, A4 = 440){
-        this.analyser = analyser;
-        this.A4 = A4;
-        this.bufferData = new Float32Array(this.analyser.frequencyBinCount);
-    }
+    // constructor(analyser:AnalyserNode, A4 = 440){
+    //     this.analyser = analyser;
+    //     this.A4 = A4;
+    //     this.bufferData = new Float32Array(this.analyser.frequencyBinCount);
+    // }
 
-    public getTunerData = ():[string,number] | false => {
-        const pitch = this.autoCorrelate(this.updateBufferData(), this.analyser.context.sampleRate);
-        if(!pitch) return false;
-        const noteNum = Math.round(12 * (Math.log( pitch / this.A4 )/Math.log(2) ))+69;
-        const aim = this.A4 * Math.pow(2,(noteNum - 69)/12);
-        const cents = Math.floor( 1200 * Math.log( pitch / aim)/Math.log(2) );
-        return [this.notes[noteNum%12], cents];
-    }
-
-    private updateBufferData = ():Float32Array => {
-        this.analyser.getFloatTimeDomainData(this.bufferData);
-        return this.bufferData;
-    }
-
-    private autoCorrelate = ( buffer:Float32Array, sampleRate:number ): number | false => {
+    public static getFrequency = ( analyser: AnalyserNode ): number | false => {
         // Implements the ACF2+ algorithm
+
+        let buffer = new Float32Array(analyser.frequencyBinCount); 
+        analyser.getFloatTimeDomainData(buffer);
+        let sampleRate = analyser.context.sampleRate;
+
         let bufferSize = buffer.length;
 
         let rms = 0;
