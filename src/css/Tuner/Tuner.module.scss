@@ -1,0 +1,134 @@
+@font-face {
+    font-family: "DS-DIGIT";
+    src: local("DS-DIGIT"),
+    url("../../fonts/DS-DIGIT.TTF") format("truetype");
+}
+
+$yellow_color: #e7e700;
+
+.tunerScreen{
+    border-radius: 15px;
+    padding: .875em 2em;
+    margin-top: .35em;
+    background-color: #67696a;
+    -webkit-box-shadow: inset 0px 0px 13px -2px rgba(51,51,51,0.7); 
+    box-shadow: inset 0px 0px 13px -2px rgba(51,51,51,0.7);
+    & .tunerNote{
+        font-size: 130px;
+        max-width: 200px;
+        width: 100%;
+        padding: 55px 0;
+        display: inline-block;
+        color: #32c530;
+        font-weight: bold;
+        font-family: 'DS-DIGIT';
+        text-align: center;
+        text-shadow: 2px 2px 2px #3c3c3c;
+        vertical-align: top;
+    }
+    & .tunerCents{
+        width: calc(100% - 200px);
+        display: inline-block;
+        vertical-align: top;
+        margin: 20px 0;
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+        & .tunerCentsInner{
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        & .tunerCentsWrapper{
+            display: inline-block;
+            vertical-align: top;
+            height: 200px;
+            width: 50%;
+            position: relative;
+            overflow: hidden;
+            & .tunerCentsNumb{
+                font-family: "DS-DIGIT";
+                font-size: 36px;
+                font-weight: bold;
+                color: #dc0c0c;
+                text-shadow: 2px 2px 2px #3c3c3c;
+                position: absolute;
+                right: 1.5em;
+                top: 60%;
+                text-align: center;
+                transform: translateY(-50%);
+                padding: .25em;
+                background-color: #3c3c3c;
+                border-radius: 3px;
+                min-width: 55px;
+            }
+            & .tunerCentsNumb.right{
+                color: #32c530;
+                right: auto;
+                left: 1.5em;
+            }
+            & > div:nth-child(1){
+                width: 200%;
+                height: 400px;
+                background-color: #ac2c2c;
+                border-radius: 50%;
+                position: absolute;
+            }
+            & > div:nth-child(2){
+                width: calc(200% - 20px);
+                height: 380px;
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                background-color: #67696a;
+                border-radius: 50%;
+            }
+            &:nth-child(2) > div:nth-child(1){
+                background-color: #32c530;
+                left: auto;
+                right: 0;
+            }
+            &:nth-child(2) > div:nth-child(2){
+                left: auto;
+                right: 10px;
+            }
+        }
+        & .tunerCentsArrow{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            & .tunerCentsArrowDot{
+                position: absolute;
+                width: 15px;
+                height: 15px;
+                background-color: $yellow_color;
+                border-radius: 50%;
+                bottom: 0;
+                left: 50%;
+                box-shadow: 0px 0px 13px -2px rgba(51,51,51,0.7);
+                transform: translateX(-50%);
+                transition: 400ms ease-in-out;
+                & .tunerCentsArrowLine{
+                    width: 5px;
+                    height: 180px;
+                    position: absolute;
+                    bottom: 90%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background-color: $yellow_color;
+                    & .tunerCentsArrowhead{
+                        position: absolute;
+                        top: -2px;
+                        left: 50%;
+                        width: 3.5px;
+                        height: 3.5px;
+                        transform: translateX(-50%) rotate(45deg);
+                        background-color: $yellow_color;
+                    }
+                }
+            }
+        }
+    }
+}

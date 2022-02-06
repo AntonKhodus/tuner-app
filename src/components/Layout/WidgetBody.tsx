@@ -1,8 +1,14 @@
 import styles from "../../css/Layout/WidgetFrame.module.scss"
 
-export const WidgetBody: React.FC = ({children}) => {
+interface WidgetBodyProps {
+    children: React.ReactNode,
+    className: string
+}
+
+export const WidgetBody: React.FC<WidgetBodyProps> = ({children, className}) => {
+
     return (
-        <div className={styles.body}>
+        <div className={`${styles.body} ${className}`}>
             {children}
         </div>
     )
