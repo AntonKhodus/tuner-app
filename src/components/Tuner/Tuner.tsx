@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react"
 import { TunerScreen } from "./TunerScreen";
 import { MainAudioContext } from "../context";
-import { IMainAudioContext } from "../../types/types";
-import { FrequencyReader } from "../../libs/FrequencyReader";
-import { WidgetFrame } from "../Layout/WidgetFrame";
+import { IMainAudioContext } from "types/types";
+import { WidgetFrame } from "components/Layout/Widget/WidgetFrame";
+import { TunerEngine } from "./TunerEngine";
+import { WidgetSettings } from "components/Layout/Widget/WidgetSettings";
 
 interface IAudioNodes {
     input: GainNode,
@@ -14,17 +15,16 @@ interface IAudioNodes {
 export const Tuner: React.FC = () => {
 
     const {context, chain} = useContext(MainAudioContext) as IMainAudioContext;
-    const [A4, setA4] = useState<number>(440);
-    const [audioNodes, setAudioNodes] = useState<IAudioNodes>({
+    const [tuner, setTuner] = useState<TunerEngine>()
+    const [tunerData, setTunerData] = useState<[string,number]>();
+    const [audioNodes] = useState<IAudioNodes>({
         input: new GainNode(context.context),
         analyser: new AnalyserNode(context.context),
         output: new GainNode(context.context)
     });
-    const [tunerData, setTunerData] = useState<[string, number]>();
 
     useEffect(() => {
         const audioNodesList = Object.entries(audioNodes);
-        const notes: string[] = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
         audioNodes.input.gain.value = 10;
         audioNodes.output.gain.value = 0.1;
         audioNodes.analyser.fftSize = 16384;
@@ -34,20 +34,9 @@ export const Tuner: React.FC = () => {
             if(prev) return [...prev, obj];
             else return [obj];
         })
-        
-        const tunerLoop = setInterval(() => {
-            const pitch = FrequencyReader.getFrequency(audioNodes.analyser);
-            if(pitch){
-                const noteNum = Math.round(12 * (Math.log( pitch / A4 )/Math.log(2) ))+69;
-                const aim = A4 * Math.pow(2,(noteNum - 69)/12);
-                const cents = Math.floor( 1200 * Math.log( pitch / aim)/Math.log(2) );
-                setTunerData([notes[noteNum%12], cents]);
-            } else {
-                setTunerData(undefined);
-            }
-        }, 1000/20)
+        setTuner(new TunerEngine(audioNodes.analyser, setTunerData));
         return () => {
-            clearInterval(tunerLoop);
+            tuner && tuner.destroy();
             audioNodesList.forEach((node, id) => {node[1].disconnect()});
         };
     }, []);
@@ -55,7 +44,10 @@ export const Tuner: React.FC = () => {
 
     return (
         <WidgetFrame>
-            <TunerScreen tunerData={tunerData}/>
+            <TunerScreen tunerData={tuner && tunerData}/>
+            <WidgetSettings>
+                
+            </WidgetSettings>
         </WidgetFrame>
     );
 }

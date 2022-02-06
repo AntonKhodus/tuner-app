@@ -1,6 +1,6 @@
 import { useState } from "react";
-import styles from "../../css/Layout/WidgetFrame.module.scss"
-import { WidgetFrameContext } from "../context";
+import styles from "css/Layout/WidgetFrame.module.scss"
+import { WidgetFrameContext } from "components/context";
 import { WidgetBody } from "./WidgetBody"
 import { WidgetHeader } from "./WidgetHeader"
 

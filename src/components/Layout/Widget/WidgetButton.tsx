@@ -1,6 +1,6 @@
 import { SyntheticEvent, useContext } from "react";
-import styles from "../../css/Layout/WidgetFrame.module.scss"
-import { WidgetFrameContext } from "../context";
+import styles from "css/Layout/WidgetFrame.module.scss"
+import { WidgetFrameContext } from "components/context";
 
 interface WidgetButtonProps{
     type?: "remove" | undefined

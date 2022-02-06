@@ -1,4 +1,4 @@
-import styles from "../../css/Layout/WidgetFrame.module.scss"
+import styles from "css/Layout/WidgetFrame.module.scss"
 
 interface WidgetBodyProps {
     children: React.ReactNode,
