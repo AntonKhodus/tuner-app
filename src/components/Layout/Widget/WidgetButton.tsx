@@ -8,11 +8,11 @@ interface WidgetButtonProps{
 
 export const WidgetButton: React.FC<WidgetButtonProps> = ({type}) => {
 
-    const {body, setBody} = useContext(WidgetFrameContext);
+    const {body, setBody, destroy} = useContext(WidgetFrameContext);
 
     const clickHandler = (event: SyntheticEvent) => {
         if(type === "remove") {
-
+            destroy();
         } else {
             setBody((prev: {}) => {
                 return {...prev, hidden: !body.hidden};

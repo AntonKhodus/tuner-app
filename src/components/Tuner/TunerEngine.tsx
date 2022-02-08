@@ -14,15 +14,15 @@ export class TunerEngine{
         this.loop = this.startTuner();
     }
 
+    public destroy = (): void => {
+        clearInterval(this.loop);
+    }
+
     private startTuner = () => {
         return setInterval(() => {
             this.tunerData = this.getNoteAndCents();
             this.updateFn(this.tunerData);
         }, 1000/5);
-    }
-
-    public destroy = (): void => {
-        clearInterval(this.loop);
     }
 
     private getNoteAndCents = (): [string, number] | undefined  => {

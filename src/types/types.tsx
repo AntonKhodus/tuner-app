@@ -13,3 +13,7 @@ export interface IChainNode {
     chainNodeInput : AudioNode,
     chainNodeOutput : AudioNode
 }
+
+export interface IAudioWidget {
+    updateChain: Function
+}
