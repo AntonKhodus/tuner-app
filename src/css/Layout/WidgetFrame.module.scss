@@ -1,7 +1,10 @@
 .frame{
     padding: 0.875em 1em;
+    margin-bottom: 1em;
     border-radius: 15px;
     background-color: #3c3c3c;
+    -webkit-box-shadow: 0px 0px 15px -3px rgba(51,51,51,0.6); 
+    box-shadow: 0px 0px 15px -3px rgba(51,51,51,0.6);
 }
 .heading{
     text-align: right;
@@ -37,9 +40,13 @@
             height: 2px;
             background-color: #343434;
             position: absolute;
+            transition: 500ms ease-out;
         }
         &.hide > div span{
             transform: translateX(-50%) translateY(-50%);
+        }
+        & .unfold span:last-child{
+            transform: translateX(-50%) translateY(-50%) rotate(270deg);
         }
         &.remove > div span:nth-child(1){
             transform: translateX(-50%) translateY(-50%) rotate(-45deg);
@@ -52,4 +59,13 @@
 
 .body{
     padding: .5em 0;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    max-height: 500px;
+    transition: 500ms ease-in-out;
+    &.hidden{
+        padding: 0;
+        max-height: 0px;
+    }
 }

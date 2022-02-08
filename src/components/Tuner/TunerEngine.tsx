@@ -1,14 +1,41 @@
-export class FrequencyReader{
-    
-    // private analyser: AnalyserNode;
-    // private bufferData: Float32Array;
-    // private A4: number;
+export class TunerEngine{
 
-    // constructor(analyser:AnalyserNode, A4 = 440){
-    //     this.analyser = analyser;
-    //     this.A4 = A4;
-    //     this.bufferData = new Float32Array(this.analyser.frequencyBinCount);
-    // }
+    private analyser: AnalyserNode;
+    private notes: string[] = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+    private A4: number;
+    private loop: NodeJS.Timer;
+    private tunerData: [string, number] | undefined;
+    private updateFn: Function;
+
+    constructor(analyser: AnalyserNode, updateFn: Function, A4: number = 440){
+        this.analyser = analyser;
+        this.updateFn = updateFn;
+        this.A4 = A4;
+        this.loop = this.startTuner();
+    }
+
+    public destroy = (): void => {
+        clearInterval(this.loop);
+    }
+
+    private startTuner = () => {
+        return setInterval(() => {
+            this.tunerData = this.getNoteAndCents();
+            this.updateFn(this.tunerData);
+        }, 1000/5);
+    }
+
+    private getNoteAndCents = (): [string, number] | undefined  => {
+        const pitch = TunerEngine.getFrequency(this.analyser);
+        if(pitch){
+            const noteNum = Math.round(12 * (Math.log( pitch / this.A4 )/Math.log(2) ))+69;
+            const aim = this.A4 * Math.pow(2,(noteNum - 69)/12);
+            const cents = Math.floor( 1200 * Math.log( pitch / aim)/Math.log(2) );
+            return [this.notes[noteNum%12], cents];
+        } else {
+            return undefined;
+        }
+    }
 
     public static getFrequency = ( analyser: AnalyserNode ): number | false => {
         // Implements the ACF2+ algorithm
